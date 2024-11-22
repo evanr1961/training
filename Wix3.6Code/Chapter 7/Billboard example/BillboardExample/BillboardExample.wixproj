@@ -1,0 +1,19 @@
+<Project Sdk="WixToolset.Sdk/5.0.1">
+  <PropertyGroup>
+    <ProductVersion>3.6</ProductVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DefineConstants>Debug</DefineConstants>
+    <SuppressIces>ICE20</SuppressIces>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Billboards\Billboard0.jpg" />
+    <Content Include="Billboards\Billboard1.jpg" />
+    <Content Include="Billboards\Billboard2.jpg" />
+    <Content Include="Billboards\Billboard3.jpg" />
+    <Content Include="InstallMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Billboards" />
+  </ItemGroup>
+</Project>

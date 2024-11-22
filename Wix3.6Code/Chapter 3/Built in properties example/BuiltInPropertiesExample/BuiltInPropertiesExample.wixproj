@@ -1,0 +1,18 @@
+<Project Sdk="WixToolset.Sdk/5.0.1">
+  <PropertyGroup>
+    <ProductVersion>3.6</ProductVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DefineConstants>Debug</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="InstallMe.txt" />
+    <Content Include="testJScript.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="testVBScript.vbs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyCSharpCustomAction1\MyCSharpCustomAction1.csproj" />
+  </ItemGroup>
+</Project>

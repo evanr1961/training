@@ -1,0 +1,24 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+	 xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
+	<Package Name="WixTutorialPackage"
+			 Manufacturer="Edgerock Concepts"
+			 Version="1.0.0.0"
+			 UpgradeCode="9aa90f6a-c07c-492a-a31d-b0a26635a7f4">
+
+		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
+
+		<MediaTemplate EmbedCab="yes"/>
+
+		<util:QueryNativeMachine />
+		
+		<Launch Condition="MsiNTProductType = 1" Message="TODO Wrong OS type! TODO"/>
+		
+		<!-- WIX_NATIVE_MACHINE: Intel x64 = 34404, Arm x64 = 43620 -->
+		<Launch 
+			Condition='"$(sys.BUILDARCH)" ~= "x64" IMP WIX_NATIVE_MACHINE = 34404' 
+			Message="TODO Must run only on an $(sys.BUILDARCH) machines! TODO"/>
+		<Feature Id="Main">
+			<ComponentGroupRef Id="AppComponents" />
+		</Feature>
+	</Package>
+</Wix>

@@ -1,0 +1,63 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
+	<Package 
+		Name="FilePermissionsExample" 
+		Language="1033" 
+		Version="1.0.0.0" 
+		Manufacturer="WixExamples" 
+		UpgradeCode="d5211b56-3621-4801-b3b7-d72ff14abb3a" 
+		InstallerVersion="200">
+		
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		
+		<MediaTemplate EmbedCab="yes" />
+
+		<Feature 
+			Id="ProductFeature" 
+			Title="FilePermissionsExample" 
+			Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Package>
+
+	<Fragment>
+		<StandardDirectory Id="ProgramFilesFolder">
+			<Directory 
+				Id="INSTALLFOLDER" 
+				Name="FilePermissionsExample" />
+		</StandardDirectory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup 
+			Id="ProductComponents" 
+			Directory="INSTALLFOLDER">
+			<Component 
+				Id="CMP_InstallMeTXT" 
+				Guid="E8A58B7B-F031-4548-9BDD-7A6796C8460D">
+
+				<!--Creates new user-->
+				<util:User 
+					Id="MyNewUser" 
+					CreateUser="yes" 
+					Name="WixTestUser" 
+					Password="ZippyDooDaa" 
+					PasswordNeverExpires="yes" 
+					RemoveOnUninstall="yes" 
+					UpdateIfExists="yes" />
+        
+				<File 
+					Id="FILE_InstallMeTXT" 
+					Source="InstallMe.txt" 
+					KeyPath="yes">
+
+					<!--Sets file permissions for user-->
+					<util:PermissionEx 
+						User="WixTestUser" 
+						GenericAll="yes" 
+						Inheritable="no" />
+				</File>
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>

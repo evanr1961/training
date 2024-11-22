@@ -1,0 +1,132 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+	<Package 
+		Name="BuiltInPropertiesExample" 
+		Language="1033" 
+		Version="1.0.0.0" 
+		Manufacturer="WixExamples" 
+		UpgradeCode="370661cf-b3e9-4c73-bd1b-f3f6939beab4" 
+		InstallerVersion="200">
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		
+		<MediaTemplate EmbedCab="yes" />
+
+		<Feature 
+			Id="ProductFeature" 
+			Title="BuiltInPropertiesExample" 
+			Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+
+		<Icon 
+			Id="myIcon" 
+			SourceFile="astronauta_32.ico" />
+
+		<!--Setting properties-->
+		<Property 
+			Id="ARPPRODUCTICON" 
+			Value="myIcon" />
+		<Property 
+			Id="ARPCOMMENTS" 
+			Value="(c) Awesome Software" />
+		<Property 
+			Id="ARPNOREPAIR" 
+			Value="1" />
+		<Property 
+			Id="ARPCONTACT" 
+			Value="Nick Ramirez" />
+		<Property 
+			Id="ARPHELPLINK" 
+			Value="http://www.MYURL.com/AwesomeSoftware/support.html" />
+		<Property 
+			Id="ARPREADME" 
+			Value="http://www.MYURL.com/AwesomeSoftware/readme.html" />
+	</Package>
+
+	<Fragment>
+
+		<SetProperty 
+			Id="MyProperty"
+			Value="123"
+			After="InstallInitialize"
+			Sequence="execute"/>
+
+		<Binary 
+			Id="MyCSharpCA1"
+			SourceFile="$(var.MyCSharpCustomAction1.TargetDir)$(var.MyCSharpCustomAction1.TargetName).CA.dll" />
+
+		<CustomAction
+			Id="CA_MyCSharpCA1"
+			BinaryRef="MyCSharpCA1"
+			DllEntry="MyCSharpCA1"
+			Execute="immediate"
+			Return="check"/>
+		
+		<InstallUISequence>
+			<Custom 
+				Action="CA_MyCSharpCA1" 
+				After="LaunchConditions"/>
+		</InstallUISequence>
+		
+		<CustomAction
+			Id="testJScript"
+			Script="jscript"
+			Execute="immediate"
+			ScriptSourceFile=".\testJScript.js" />
+
+		<InstallUISequence>
+			<Custom
+				Action="testJScript"
+				After="LaunchConditions"/>
+		</InstallUISequence>
+
+		<CustomAction
+			Id="rememberInstallDir"
+			Property="ARPINSTALLLOCATION"
+			Value="[INSTALLFOLDER]" />
+
+		<InstallExecuteSequence>
+			<Custom 
+				Action="rememberInstallDir" 
+				After="InstallValidate" />
+		</InstallExecuteSequence>
+	
+		<StandardDirectory Id="ProgramFilesFolder">
+			<Directory 
+				Id="INSTALLFOLDER" 
+				Name="BuiltInPropertiesExample" />
+		</StandardDirectory>
+
+		<StandardDirectory Id="CommonAppDataFolder">
+			<Directory
+				Id="DataDir"
+				Name="MyCommonDataDir" />
+		</StandardDirectory>
+		
+		<CustomAction
+			Id="SetAppDataDir"
+			Directory="DataDir"
+			Value="[CommonAppDataFolder]MyProduct" />
+
+		<InstallExecuteSequence>
+			<Custom
+				Action="SetAppDataDir"
+				Before="InstallFiles" />
+		</InstallExecuteSequence>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup 
+			Id="ProductComponents" 
+			Directory="INSTALLFOLDER">
+			<Component 
+				Id="CMP_InstallMeTXT" 
+				Guid="E8A58B7B-F031-4548-9BDD-7A6796C8460D">
+				<File 
+					Id="FILE_InstallMeTXT" 
+					Source="InstallMe.txt" 
+					KeyPath="yes" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
